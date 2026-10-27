@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Moodboard tokens</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+  <link rel="stylesheet" href="../css/tokens.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/board.css">
+  <link rel="stylesheet" href="../css/ui.css">
+  <style>
+    /* preview-only layout: cards flow in sections instead of floating on paper */
+    body { padding: 140px var(--edge) 120px; }
+    section.sheet { margin: 0 0 64px; }
+    .sheet > h2 { margin: 0 0 20px; font: inherit; text-transform: uppercase; color: var(--muted); }
+    .row { display: flex; flex-wrap: wrap; gap: 30px; align-items: flex-start; }
+    .row .card { position: relative; }
+    .chip { width: 120px; }
+    .chip i { display: block; height: 64px; border: 1px solid var(--line); }
+    .chip span { display: block; margin-top: 6px; }
+    .type-sample > * { margin: 0 0 12px; }
+    .icons { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 16px; }
+    .icons div { display: flex; gap: 8px; align-items: center; text-transform: uppercase; }
+    .icons .icon { width: 28px; height: 28px; }
+    .stage { position: relative; height: 560px; overflow: hidden; background: var(--paper); box-shadow: inset 0 0 0 1px var(--line); }
+    .stage .board-title { position: absolute; }
+    .stage .card { position: absolute; }
+    .ui-demo { position: relative; height: 340px; box-shadow: inset 0 0 0 1px var(--line); }
+    .ui-demo .toolbar, .ui-demo .boards, .ui-demo .zoom, .ui-demo .toast { position: absolute; }
+    .ui-demo .boards { z-index: 1; }
+    .ui-demo .menu { position: absolute; left: 380px; top: 110px; }
+  </style>
+  <script>
+    /* the Tastbaar accent: one per load (same script as index.html) */
+    (function () {
+      const picks = ["#f00", "#0f0", "#00f", "#ff0", "#0ff", "#f0f"];
+      const accent = picks[Math.floor(Math.random() * picks.length)];
+      const paint = "#" + [...accent.slice(1)].map((c) => (c === "f" ? "0" : "f")).join("");
+      const ink = (accent === "#00f" || accent === "#f00") ? "#fff" : "#000";
+      const root = document.documentElement.style;
+      root.setProperty("--accent", accent);
+      root.setProperty("--accent-paint", paint);
+      root.setProperty("--accent-ink", ink);
+    })();
+  </script>
+</head>
+<body>
+
+  <header class="toolbar" aria-label="Toolbar">
+    <a class="toolbar__logo" href="https://tastbaar.studio"><img src="../assets/logo.svg" alt="Tastbaar" width="28" height="28"></a>
+    <span class="toolbar__name">Tokens preview</span>
+  </header>
+
+  <!-- colour -->
+  <section class="sheet">
+    <h2>Colour</h2>
+    <div class="row">
+      <div class="chip"><i style="background:var(--paper)"></i><span>--paper #FFF</span></div>
+      <div class="chip"><i style="background:var(--ink)"></i><span>--ink #000</span></div>
+      <div class="chip"><i style="background:var(--line)"></i><span>--line #CCC</span></div>
+      <div class="chip"><i style="background:var(--muted)"></i><span>--muted #777</span></div>
+      <div class="chip"><i style="background:var(--accent)"></i><span>--accent (per load)</span></div>
+      <div class="chip"><i style="background:var(--brand-navy)"></i><span>--brand-navy</span></div>
+      <div class="chip"><i style="background:var(--c-red)"></i><span>--c-red</span></div>
+      <div class="chip"><i style="background:var(--c-green)"></i><span>--c-green</span></div>
+      <div class="chip"><i style="background:var(--c-blue)"></i><span>--c-blue</span></div>
+      <div class="chip"><i style="background:var(--c-yellow)"></i><span>--c-yellow</span></div>
+      <div class="chip"><i style="background:var(--c-cyan)"></i><span>--c-cyan</span></div>
+      <div class="chip"><i style="background:var(--c-magenta)"></i><span>--c-magenta</span></div>
+    </div>
+  </section>
+
+  <!-- type -->
+  <section class="sheet type-sample">
+    <h2>Type</h2>
+    <p>Body 14/18 Courier Prime. Ideas are nice. Tangible is better. <b>Bold 700.</b> <i>Italic.</i> <a href="#">A link</a>.</p>
+    <p class="upper">Label · button · menu item · more →</p>
+    <p style="font-size:var(--text-lg);line-height:var(--leading-lg)">Emphasis 18/24. Hide a thank-you note where a stranger will find it.</p>
+    <p class="muted">Muted secondary text, #888.</p>
+    <p style="font:var(--display-weight) 72px/var(--display-leading) var(--display);letter-spacing:var(--display-tracking)">Helvetica 800 −0.075em</p>
+  </section>
+
+  <!-- shadows -->
+  <section class="sheet">
+    <h2>Shadow</h2>
+    <div class="row">
+      <article class="card" style="width:200px"><header class="card__bar"><span class="card__label">Rest</span></header><div class="card__body">--shadow-rest</div></article>
+      <article class="card" style="width:200px;box-shadow:var(--shadow-float)"><header class="card__bar"><span class="card__label">Float</span></header><div class="card__body">--shadow-float</div></article>
+      <article class="card is-dragging" style="width:200px"><header class="card__bar"><span class="card__label">Drag</span></header><div class="card__body">--shadow-drag</div></article>
+      <article class="card is-selected" style="width:200px"><header class="card__bar"><span class="card__label">Selected</span></header><div class="card__body">--focus outline</div></article>
+      <article class="card is-breathing" style="width:200px"><header class="card__bar"><span class="card__label">Breathe</span><span class="card__meta">8s</span></header><div class="card__body">float loop</div></article>
+    </div>
+  </section>
+
+  <!-- label tabs -->
+  <section class="sheet">
+    <h2>Label tabs</h2>
+    <div class="row">
+      <article class="card" style="width:220px"><header class="card__bar"><span class="card__label">Ink</span><span class="card__meta">2026</span></header><div class="card__body">Default.</div></article>
+      <article class="card card--red" style="width:220px"><header class="card__bar"><span class="card__label">Red</span><span class="card__meta">2026</span></header><div class="card__body">White tab text.</div></article>
+      <article class="card card--green" style="width:220px"><header class="card__bar"><span class="card__label">Green</span><span class="card__meta">2026</span></header><div class="card__body">Black tab text.</div></article>
+      <article class="card card--blue" style="width:220px"><header class="card__bar"><span class="card__label">Blue</span><span class="card__meta">2026</span></header><div class="card__body">White tab text.</div></article>
+      <article class="card card--yellow" style="width:220px"><header class="card__bar"><span class="card__label">Yellow</span><span class="card__meta">2026</span></header><div class="card__body">Black tab text.</div></article>
+      <article class="card card--cyan" style="width:220px"><header class="card__bar"><span class="card__label">Cyan</span><span class="card__meta">2026</span></header><div class="card__body">Black tab text.</div></article>
+      <article class="card card--magenta" style="width:220px"><header class="card__bar"><span class="card__label">Magenta</span><span class="card__meta">2026</span></header><div class="card__body">White tab text.</div></article>
+    </div>
+  </section>
+
+  <!-- card types -->
+  <section class="sheet">
+    <h2>Card types</h2>
+    <div class="row">
+      <article class="card card--note">
+        <header class="card__bar"><span class="card__label">How we work</span></header>
+        <div class="card__body">
+          <ol>
+            <li><b>Research.</b> We dig into the place, the people and the problem.</li>
+            <li><b>Think along.</b> A creative partner, for one brainstorm or the whole project.</li>
+            <li><b>Make it visible.</b> Sketches, visuals, prototypes: early and fast.</li>
+            <li><b>Build it.</b> All the way to the real thing.</li>
+          </ol>
+          <p class="rule">Take the whole route, or just the steps you need.</p>
+        </div>
+      </article>
+
+      <article class="card card--image card--blue">
+        <header class="card__bar"><span class="card__label">Image</span><span class="card__meta">cover</span></header>
+        <svg class="card__img" viewBox="0 0 400 300" role="img" aria-label="Placeholder image"><rect width="400" height="300" fill="#aaa"/><path d="M0 240 L140 130 L240 210 L290 170 L400 240 L400 300 L0 300 Z" fill="#888"/></svg>
+        <div class="card__body"><p>Caption under the image.</p></div>
+      </article>
+
+      <article class="card card--link" style="width:300px">
+        <header class="card__bar"><span class="card__label">Link</span><span class="card__meta">TASTBAAR.STUDIO</span></header>
+        <div class="card__body">
+          <p class="link__title">Tastbaar — Experience design studio</p>
+          <p>We think along, make ideas visible, prototype and build.</p>
+          <a class="more" href="#">Open →</a>
+        </div>
+      </article>
+
+      <article class="card card--todo card--yellow" style="width:300px">
+        <header class="card__bar"><span class="card__label">To-do</span><span class="card__meta">2/4</span></header>
+        <div class="card__body">
+          <ul class="todo">
+            <li><input type="checkbox" checked aria-label="Done"><span>Visit the space</span></li>
+            <li><input type="checkbox" checked aria-label="Done"><span>Sketch three routes</span></li>
+            <li><input type="checkbox" aria-label="Done"><span>Prototype the entrance</span></li>
+            <li><input type="checkbox" aria-label="Done"><span>Test with five people</span></li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="card card--swatch">
+        <header class="card__bar"><span class="card__label">Swatch</span></header>
+        <div class="swatch__chip" style="--chip:#1d2a44"></div>
+        <div class="card__body"><p class="swatch__hex">#1D2A44</p><p>Brand navy</p></div>
+      </article>
+
+      <div class="card card--heading">Heading</div>
+
+      <article class="card card--column card--magenta" style="width:260px">
+        <header class="card__bar"><span class="card__label">Column</span><span class="card__meta">2</span></header>
+        <div class="card__body">
+          <article class="card" style="position:relative;width:auto"><header class="card__bar"><span class="card__label">Note</span></header><div class="card__body" style="padding:var(--card-pad-sm)">Stacked with 10px gaps.</div></article>
+          <article class="card" style="position:relative;width:auto"><header class="card__bar"><span class="card__label">Note</span></header><div class="card__body" style="padding:var(--card-pad-sm)">Drop more here.</div></article>
+        </div>
+      </article>
+
+      <article class="card card--board" style="width:300px">
+        <header class="card__bar"><span class="card__label">Retail ideas</span><span class="card__meta">Open</span></header>
+        <div class="card__body" style="padding:var(--card-pad-sm)">
+          <div class="board__mini">
+            <span style="left:8%;top:12%;width:30%;height:40%"></span>
+            <span style="left:45%;top:30%;width:25%;height:30%"></span>
+            <span style="left:20%;top:62%;width:35%;height:25%"></span>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- connectors -->
+  <section class="sheet">
+    <h2>Connectors</h2>
+    <svg width="560" height="120" viewBox="0 0 560 120" aria-label="Connector styles">
+      <path class="connector" d="M20 30 L250 30"/><path class="connector" d="M238 22 L250 30 L238 38"/>
+      <path class="connector is-dashed" d="M20 70 L250 70"/>
+      <path class="connector is-selected" d="M300 50 L540 50"/><path class="connector is-selected" d="M528 42 L540 50 L528 58"/><path class="connector is-selected" d="M312 42 L300 50 L312 58"/>
+      <foreignObject x="370" y="38" width="120" height="24"><span class="connector__label">leads to</span></foreignObject>
+    </svg>
+  </section>
+
+  <!-- icons -->
+  <section class="sheet">
+    <h2>Icons</h2>
+    <div class="icons" id="icons"></div>
+  </section>
+
+  <!-- board title over cards -->
+  <section class="sheet">
+    <h2>Board title over cards</h2>
+    <div class="stage paper has-grid" style="position:relative">
+      <article class="card" style="left:30px;top:30px"><header class="card__bar"><span class="card__label">Hi.</span></header><div class="card__body"><p>Empty board. Double-click anywhere to start.</p><p>Ideas are nice. Tangible is better.</p></div></article>
+      <article class="card card--red is-breathing" style="left:380px;top:200px;--breathe:9.5s;--breathe-delay:-2s"><header class="card__bar"><span class="card__label">Try this</span><span class="card__meta">1/40</span></header><div class="card__body"><p class="lg">Hide a thank-you note where a stranger will find it.</p></div></article>
+      <article class="card card--cyan is-breathing" style="left:760px;top:80px;--breathe:7.2s;--breathe-delay:-5s"><header class="card__bar"><span class="card__label">Experiences</span></header><div class="card__body"><ul style="list-style:none;padding:0"><li>Retail experiences</li><li>Immersive expos</li><li>Brand activations</li></ul></div></article>
+      <h1 class="board-title">MOOD</h1>
+    </div>
+  </section>
+
+  <!-- UI -->
+  <section class="sheet">
+    <h2>Toolbar, board list, zoom, menu, toast</h2>
+    <div class="ui-demo">
+      <div class="toolbar" style="position:absolute;top:0;left:0;right:0">
+        <span class="toolbar__logo"><img src="../assets/logo.svg" alt="" width="28" height="28"></span>
+        <span class="toolbar__name">Mood</span>
+        <button class="btn"><svg class="icon"><use href="../assets/icons.svg#i-note"/></svg>Note</button>
+        <button class="btn"><svg class="icon"><use href="../assets/icons.svg#i-image"/></svg>Image</button>
+        <button class="btn"><svg class="icon"><use href="../assets/icons.svg#i-link"/></svg>Link</button>
+        <button class="btn"><svg class="icon"><use href="../assets/icons.svg#i-todo"/></svg>To-do</button>
+        <button class="btn"><svg class="icon"><use href="../assets/icons.svg#i-swatch"/></svg>Swatch</button>
+        <button class="btn"><svg class="icon"><use href="../assets/icons.svg#i-heading"/></svg>Heading</button>
+        <button class="btn"><svg class="icon"><use href="../assets/icons.svg#i-column"/></svg>Column</button>
+        <button class="btn"><svg class="icon"><use href="../assets/icons.svg#i-board"/></svg>Board</button>
+        <span class="toolbar__sep"></span>
+        <button class="btn"><svg class="icon"><use href="../assets/icons.svg#i-undo"/></svg>Undo</button>
+        <button class="btn"><svg class="icon"><use href="../assets/icons.svg#i-redo"/></svg>Redo</button>
+        <span class="toolbar__sep"></span>
+        <button class="btn" aria-pressed="true"><svg class="icon"><use href="../assets/icons.svg#i-grid"/></svg>Grid</button>
+        <button class="btn"><svg class="icon"><use href="../assets/icons.svg#i-import"/></svg>Import</button>
+        <button class="btn"><svg class="icon"><use href="../assets/icons.svg#i-export"/></svg>Export ▾</button>
+        <span class="toolbar__crumbs"><a href="#">Mood</a> / Retail ideas</span>
+      </div>
+      <div class="menu panel" role="menu">
+        <button class="menu__item" role="menuitem">Rename</button>
+        <button class="menu__item" role="menuitem">Duplicate</button>
+        <button class="menu__item" role="menuitem">Delete</button>
+      </div>
+      <nav class="boards panel" style="right:20px;bottom:20px" aria-label="Boards">
+        <div class="boards__group">
+          <span class="boards__head">Boards</span>
+          <a href="#" aria-current="page">Mood</a>
+          <a href="#">Retail ideas</a>
+          <a href="#">Expo 2027</a>
+        </div>
+        <div class="boards__group"><a href="#">New board</a></div>
+      </nav>
+      <div class="zoom panel" style="left:20px;bottom:20px">
+        <button class="btn" aria-label="Zoom out"><svg class="icon"><use href="../assets/icons.svg#i-minus"/></svg></button>
+        <span class="zoom__value">100%</span>
+        <button class="btn" aria-label="Zoom in"><svg class="icon"><use href="../assets/icons.svg#i-plus"/></svg></button>
+        <button class="btn">Fit</button>
+      </div>
+      <div class="toast" style="bottom:20px">Saved</div>
+    </div>
+  </section>
+
+  <script>
+    /* list every symbol in the sprite */
+    fetch("../assets/icons.svg").then((r) => r.text()).then((txt) => {
+      const ids = [...txt.matchAll(/<symbol id="([^"]+)"/g)].map((m) => m[1]);
+      document.getElementById("icons").innerHTML = ids.map((id) =>
+        `<div><svg class="icon"><use href="../assets/icons.svg#${id}"/></svg>${id.slice(2)}</div>`).join("");
+    });
+  </script>
+</body>
+</html>

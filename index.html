@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Mood — Tastbaar</title>
+  <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+  <!-- start the font and the app code downloading before the stylesheets are parsed -->
+  <link rel="preload" href="assets/fonts/CourierPrime-Regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/CourierPrime-Bold.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="modulepreload" href="js/main.js">
+  <script>
+    /* Tastbaar accent: a new colour on every load, any mix of 0 and f
+       (not black, not white). Picked before the page draws, so it never flashes.
+       Used for hover, press, selection, focus and the inverting board title. */
+    (function () {
+      const picks = ["#f00", "#0f0", "#00f", "#ff0", "#0ff", "#f0f"];
+      const accent = picks[Math.floor(Math.random() * picks.length)];
+      const paint = "#" + [...accent.slice(1)].map((c) => (c === "f" ? "0" : "f")).join("");
+      const ink = (accent === "#00f" || accent === "#f00") ? "#fff" : "#000";
+      const root = document.documentElement.style;
+      root.setProperty("--accent", accent);
+      root.setProperty("--accent-paint", paint);
+      root.setProperty("--accent-ink", ink);
+      window.TB_ACCENT = accent; // for canvas drawing and exports
+    })();
+  </script>
+  <!-- a failed script must never leave a dead page: hide the loader, show a black bar -->
+  <script>
+    (function () {
+      function fail(msg) {
+        var l = document.getElementById("loader");
+        if (l) l.hidden = true;
+        if (document.getElementById("tb-error")) return;
+        var bar = document.createElement("div");
+        bar.id = "tb-error";
+        bar.setAttribute("role", "alert");
+        bar.style.cssText = "position:fixed;left:0;right:0;bottom:0;z-index:9100;background:#000;color:#fff;padding:8px 12px;font:13px/17px 'Courier Prime','Courier New',Courier,monospace;text-transform:uppercase";
+        bar.textContent = "Something went wrong: " + String(msg || "unknown error").slice(0, 120) + " \u2014 reload the page";
+        (document.body || document.documentElement).appendChild(bar);
+      }
+      window.TB_FAIL = fail;
+      window.addEventListener("error", function (e) { fail(e.message || (e.target && e.target.src) || "script failed"); }, true);
+      window.addEventListener("unhandledrejection", function (e) { fail(e.reason && e.reason.message); });
+    })();
+  </script>
+  <!-- start-up loader: inline, so it shows before the other files arrive (after the accent script) -->
+  <style>
+    #loader { position: fixed; inset: 0; z-index: 9000; background: #fff; display: flex; flex-direction: column;
+              align-items: center; justify-content: center; gap: 14px; pointer-events: none;
+              font: 13px/17px "Courier Prime", "Courier New", Courier, monospace; transition: opacity .3s; }
+    #loader[hidden] { display: none; }
+    #loader.done { opacity: 0; }
+    #loader .tag { background: #000; color: #fff; padding: 2px 6px; text-transform: uppercase; }
+    #loader .bar { width: min(280px, 70vw); height: 8px; background: #ececec; }
+    #loader .bar i { display: block; height: 100%; width: 6%; background: #000; box-shadow: 4px 4px 0 var(--accent, #0ff);
+                     transition: width 12s cubic-bezier(.1, .6, .2, 1); }
+    #loader.fast .bar i { transition: width .25s ease-out; }
+    @media (prefers-reduced-motion: reduce) { #loader .bar i, #loader { transition: none; } }
+  </style>
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/board.css">
+  <link rel="stylesheet" href="css/ui.css">
+</head>
+<body>
+  <div id="loader" role="status" aria-live="polite">
+    <span class="tag">Mood</span>
+    <div class="bar"><i id="loader-bar"></i></div>
+    <span class="tag" id="loader-text">Loading</span>
+  </div>
+  <script>
+    (function () {
+      var loader = document.getElementById("loader"), bar = document.getElementById("loader-bar"), text = document.getElementById("loader-text");
+      window.TB_LOAD = function (percent, label, fast) {
+        if (fast) loader.classList.add("fast");
+        bar.style.width = percent + "%";
+        if (label) text.textContent = label;
+        if (percent >= 100) { loader.classList.add("done"); setTimeout(function () { loader.hidden = true; }, 400); }
+      };
+      requestAnimationFrame(function () { requestAnimationFrame(function () { window.TB_LOAD(70, "LOADING"); }); });
+    })();
+  </script>
+
+  <!-- paper / canvas -->
+  <div id="paper" class="paper" role="application" aria-label="Moodboard canvas">
+    <!-- connectors sit under the cards -->
+    <svg id="connectors-layer" class="connectors-layer" aria-hidden="true"></svg>
+    <div id="board-layer" class="board-layer">
+      <div id="marquee-layer" class="marquee-layer"></div>
+      <div id="guide-layer" class="guide-layer"></div>
+    </div>
+    <!-- board list: in the paper's layer, under the cards, so cards slide over it -->
+    <nav id="boards" class="boards panel" aria-label="Boards">
+      <div class="boards__group">
+        <button class="boards__head" id="btn-boards-toggle" aria-expanded="true" title="Fold the list away">Boards</button>
+        <div id="boards-list" class="boards__list"></div>
+      </div>
+      <div class="boards__group boards__actions">
+        <button class="btn" id="btn-new-board">New board</button>
+        <button class="btn" id="btn-boards-menu" aria-label="Rename, duplicate or delete this board">•••</button>
+      </div>
+    </nav>
+  </div>
+
+  <!-- board title: the board's name, standing up along the right edge, inverting -->
+  <h1 id="board-title" class="board-title" aria-live="polite"></h1>
+
+  <!-- toolbar: logo, board name, undo / redo, and two menus -->
+  <header id="toolbar" class="toolbar" aria-label="Toolbar">
+    <a class="toolbar__logo" href="https://tastbaar.studio" target="_blank" rel="noopener" title="tastbaar.studio">
+      <img src="assets/logo.svg" alt="Tastbaar" width="28" height="28">
+    </a>
+    <!-- parent boards as links, then the open board as a black label (click to rename) -->
+    <nav class="toolbar__crumbs" id="breadcrumbs" aria-label="Board trail"></nav>
+    <span class="toolbar__spacer"></span>
+    <button class="btn btn--icon" id="btn-undo" title="Undo (⌘Z)" aria-label="Undo"><svg class="icon"><use href="assets/icons.svg#i-undo"/></svg></button>
+    <button class="btn btn--icon" id="btn-redo" title="Redo (⇧⌘Z)" aria-label="Redo"><svg class="icon"><use href="assets/icons.svg#i-redo"/></svg></button>
+    <span class="toolbar__sep"></span>
+    <button class="btn" id="btn-view-menu" data-menu="menu-view" aria-haspopup="menu" aria-expanded="false">View ▾</button>
+    <button class="btn" id="btn-file-menu" data-menu="menu-file" aria-haspopup="menu" aria-expanded="false">File ▾</button>
+  </header>
+
+  <!-- View menu -->
+  <div class="menu panel popmenu" id="menu-view" role="menu" hidden>
+    <button class="menu__item" id="btn-grid" role="menuitemcheckbox" aria-pressed="false" title="Dot grid (G)"><svg class="icon"><use href="assets/icons.svg#i-grid"/></svg>Grid</button>
+    <button class="menu__item" id="btn-breathe" role="menuitemcheckbox" aria-pressed="false" title="Let the cards breathe"><svg class="icon"><use href="assets/icons.svg#i-breathe"/></svg>Breathe</button>
+    <button class="menu__item" id="btn-title-toggle" role="menuitemcheckbox" aria-pressed="true" title="Show the board title"><svg class="icon"><use href="assets/icons.svg#i-title"/></svg>Board title</button>
+  </div>
+
+  <!-- File menu -->
+  <div class="menu panel popmenu" id="menu-file" role="menu" hidden>
+    <button class="menu__item" id="btn-import" role="menuitem" title="Import a .json board"><svg class="icon"><use href="assets/icons.svg#i-import"/></svg>Import</button>
+    <div class="menu__divider" role="separator"></div>
+    <button class="menu__item" data-export="png" role="menuitem">Export PNG</button>
+    <button class="menu__item" data-export="pdf" role="menuitem">Export PDF</button>
+    <button class="menu__item" data-export="json" role="menuitem">Export JSON</button>
+    <button class="menu__item" data-export="all-pdf" role="menuitem">Export all boards (PDF)</button>
+    <button class="menu__item" data-export="all-json" role="menuitem">Export all boards (JSON)</button>
+    <div class="menu__divider" role="separator"></div>
+    <button class="menu__item" id="btn-about" role="menuitem" title="About and shortcuts (?)">About and shortcuts</button>
+  </div>
+
+  <!-- add a card: the button bottom-right and the menu it opens -->
+  <button class="fab" id="btn-add" data-menu="menu-add" data-place="above" aria-haspopup="menu" aria-expanded="false" aria-label="Add card" title="Add a card">
+    <svg class="icon"><use href="assets/icons.svg#i-plus"/></svg>
+  </button>
+  <div class="menu panel popmenu" id="menu-add" role="menu" hidden>
+    <button class="menu__item" id="btn-note" role="menuitem" data-type="note" title="Note (N)"><svg class="icon"><use href="assets/icons.svg#i-note"/></svg>Note</button>
+    <button class="menu__item" id="btn-image" role="menuitem" data-type="image" title="Image, or drop / paste one"><svg class="icon"><use href="assets/icons.svg#i-image"/></svg>Image</button>
+    <button class="menu__item" id="btn-link" role="menuitem" data-type="link" title="Link, or paste a URL"><svg class="icon"><use href="assets/icons.svg#i-link"/></svg>Link</button>
+    <button class="menu__item" id="btn-todo" role="menuitem" data-type="todo" title="To-do (T)"><svg class="icon"><use href="assets/icons.svg#i-todo"/></svg>To-do</button>
+    <button class="menu__item" id="btn-swatch" role="menuitem" data-type="swatch" title="Swatch"><svg class="icon"><use href="assets/icons.svg#i-swatch"/></svg>Swatch</button>
+    <button class="menu__item" id="btn-heading" role="menuitem" data-type="heading" title="Heading (H)"><svg class="icon"><use href="assets/icons.svg#i-heading"/></svg>Heading</button>
+    <button class="menu__item" id="btn-column" role="menuitem" data-type="column" title="Column"><svg class="icon"><use href="assets/icons.svg#i-column"/></svg>Column</button>
+    <button class="menu__item" id="btn-board" role="menuitem" data-type="board" title="A board inside this board"><svg class="icon"><use href="assets/icons.svg#i-board"/></svg>Board</button>
+  </div>
+
+  <!-- zoom controls -->
+  <div class="zoom panel" aria-label="Zoom controls">
+    <button class="btn" id="btn-zoom-out" aria-label="Zoom out"><svg class="icon"><use href="assets/icons.svg#i-minus"/></svg></button>
+    <span class="zoom__value" id="zoom-value">100%</span>
+    <button class="btn" id="btn-zoom-in" aria-label="Zoom in"><svg class="icon"><use href="assets/icons.svg#i-plus"/></svg></button>
+    <button class="btn" id="btn-zoom-fit">Fit</button>
+  </div>
+
+  <!-- version and zoom, bottom-right -->
+  <div class="status" id="status" aria-hidden="true"></div>
+
+  <!-- toast container -->
+  <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+  <!-- backdrop / dialogs -->
+  <div id="backdrop" class="backdrop" hidden></div>
+
+  <!-- file input for import -->
+  <input type="file" id="file-import" accept="application/json,.json" hidden>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

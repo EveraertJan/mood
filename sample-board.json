@@ -1,0 +1,370 @@
+{
+  "app": "tastbaar-moodboard",
+  "schemaVersion": 1,
+  "exportedAt": "2026-10-22T17:08:18.329Z",
+  "boards": [
+    {
+      "id": "board-001-0000-4000-8000-000000000000",
+      "name": "Tastbaar",
+      "parentId": null,
+      "titleColor": "red",
+      "showTitle": true,
+      "grid": true,
+      "viewport": {
+        "x": 0,
+        "y": 50,
+        "zoom": 1
+      },
+      "cards": [
+        {
+          "id": "card-003-0000-4000-8000-000000000000",
+          "type": "heading",
+          "x": 40,
+          "y": 30,
+          "w": 520,
+          "h": 80,
+          "z": 1,
+          "rotation": 0,
+          "label": "",
+          "meta": "",
+          "color": "ink",
+          "locked": false,
+          "parentColumnId": null,
+          "data": {
+            "text": "Tastbaar"
+          }
+        },
+        {
+          "id": "card-004-0000-4000-8000-000000000000",
+          "type": "note",
+          "x": 40,
+          "y": 150,
+          "w": 360,
+          "h": 260,
+          "z": 2,
+          "rotation": 0,
+          "label": "How we work",
+          "meta": "",
+          "color": "ink",
+          "locked": false,
+          "parentColumnId": null,
+          "data": {
+            "html": "<p><b>Research.</b> We dig into the place, the people and the problem before we design anything.</p><p><b>Think along.</b> We join your team as a creative partner, for a single brainstorm or the whole project.</p><p><b>Make it visible.</b> Sketches, visuals, prototypes: early and fast.</p><p class=\"rule\"><br></p><p>Take the whole route, or just the steps you need.</p>"
+          }
+        },
+        {
+          "id": "card-005-0000-4000-8000-000000000000",
+          "type": "note",
+          "x": 440,
+          "y": 150,
+          "w": 360,
+          "h": 300,
+          "z": 3,
+          "rotation": 0,
+          "label": "Experiences",
+          "meta": "",
+          "color": "cyan",
+          "locked": false,
+          "parentColumnId": null,
+          "data": {
+            "html": "<ul><li>Retail experiences</li><li>Immersive expos</li><li>Brand activations</li><li>Technical consultancy</li><li>Prototypes &amp; tangible interfaces</li><li>Anything with an experience angle</li></ul>"
+          }
+        },
+        {
+          "id": "card-006-0000-4000-8000-000000000000",
+          "type": "note",
+          "x": 840,
+          "y": 150,
+          "w": 360,
+          "h": 180,
+          "z": 4,
+          "rotation": 0,
+          "label": "Try this",
+          "meta": "1/40",
+          "color": "red",
+          "locked": false,
+          "parentColumnId": null,
+          "data": {
+            "html": "<p class=\"lg\">Hide a thank-you note where a stranger will find it.</p>"
+          }
+        },
+        {
+          "id": "card-007-0000-4000-8000-000000000000",
+          "type": "link",
+          "x": 40,
+          "y": 620,
+          "w": 360,
+          "h": 180,
+          "z": 5,
+          "rotation": 0,
+          "label": "Studio",
+          "meta": "",
+          "color": "blue",
+          "locked": false,
+          "parentColumnId": null,
+          "data": {
+            "url": "https://tastbaar.studio",
+            "title": "Tastbaar — experience design studio",
+            "description": "We think along, make ideas visible, prototype and build."
+          }
+        },
+        {
+          "id": "card-012-0000-4000-8000-000000000000",
+          "type": "todo",
+          "x": 440,
+          "y": 620,
+          "w": 360,
+          "h": 200,
+          "z": 6,
+          "rotation": 0,
+          "label": "To-do",
+          "meta": "",
+          "color": "yellow",
+          "locked": false,
+          "parentColumnId": null,
+          "data": {
+            "items": [
+              {
+                "id": "item-008-0000-4000-8000-000000000000",
+                "text": "Visit the space",
+                "done": true
+              },
+              {
+                "id": "item-009-0000-4000-8000-000000000000",
+                "text": "Sketch three routes",
+                "done": true
+              },
+              {
+                "id": "item-010-0000-4000-8000-000000000000",
+                "text": "Prototype the entrance",
+                "done": false
+              },
+              {
+                "id": "item-011-0000-4000-8000-000000000000",
+                "text": "Test with five people",
+                "done": false
+              }
+            ]
+          }
+        },
+        {
+          "id": "card-013-0000-4000-8000-000000000000",
+          "type": "swatch",
+          "x": 840,
+          "y": 620,
+          "w": 170,
+          "h": 240,
+          "z": 7,
+          "rotation": 0,
+          "label": "Swatch",
+          "meta": "",
+          "color": "magenta",
+          "locked": false,
+          "parentColumnId": null,
+          "data": {
+            "hex": "#1D2A44",
+            "name": "Brand navy"
+          }
+        },
+        {
+          "id": "card-014-0000-4000-8000-000000000000",
+          "type": "swatch",
+          "x": 1030,
+          "y": 620,
+          "w": 170,
+          "h": 240,
+          "z": 8,
+          "rotation": 0,
+          "label": "Swatch",
+          "meta": "",
+          "color": "green",
+          "locked": false,
+          "parentColumnId": null,
+          "data": {
+            "hex": "#FF00FF",
+            "name": "Accent magenta"
+          }
+        },
+        {
+          "id": "card-015-0000-4000-8000-000000000000",
+          "type": "image",
+          "x": 1240,
+          "y": 620,
+          "w": 260,
+          "h": 260,
+          "z": 9,
+          "rotation": 0,
+          "label": "Logo",
+          "meta": "",
+          "color": "ink",
+          "locked": false,
+          "parentColumnId": null,
+          "data": {
+            "assetId": "asset-002-0000-4000-8000-000000000000",
+            "caption": "Two strokes, one hand.",
+            "fit": "contain"
+          }
+        },
+        {
+          "id": "card-016-0000-4000-8000-000000000000",
+          "type": "column",
+          "x": 840,
+          "y": 370,
+          "w": 360,
+          "h": 200,
+          "z": 10,
+          "rotation": 0,
+          "label": "Column",
+          "meta": "",
+          "color": "green",
+          "locked": false,
+          "parentColumnId": null,
+          "data": {
+            "collapsed": false
+          }
+        },
+        {
+          "id": "card-017-0000-4000-8000-000000000000",
+          "type": "note",
+          "x": 0,
+          "y": 0,
+          "w": 220,
+          "h": 90,
+          "z": 11,
+          "rotation": 0,
+          "label": "Step 1",
+          "meta": "",
+          "color": "ink",
+          "locked": false,
+          "parentColumnId": "card-016-0000-4000-8000-000000000000",
+          "data": {
+            "html": "<p>Research the place.</p>"
+          }
+        },
+        {
+          "id": "card-018-0000-4000-8000-000000000000",
+          "type": "note",
+          "x": 0,
+          "y": 0,
+          "w": 220,
+          "h": 90,
+          "z": 12,
+          "rotation": 0,
+          "label": "Step 2",
+          "meta": "",
+          "color": "ink",
+          "locked": false,
+          "parentColumnId": "card-016-0000-4000-8000-000000000000",
+          "data": {
+            "html": "<p>Make it visible.</p>"
+          }
+        },
+        {
+          "id": "card-022-0000-4000-8000-000000000000",
+          "type": "board",
+          "x": 1240,
+          "y": 150,
+          "w": 260,
+          "h": 220,
+          "z": 13,
+          "rotation": 0,
+          "label": "Retail ideas",
+          "meta": "",
+          "color": "blue",
+          "locked": false,
+          "parentColumnId": null,
+          "data": {
+            "boardId": "board-019-0000-4000-8000-000000000000"
+          }
+        }
+      ],
+      "connectors": [
+        {
+          "id": "conn-023-0000-4000-8000-000000000000",
+          "from": "card-004-0000-4000-8000-000000000000",
+          "to": "card-005-0000-4000-8000-000000000000",
+          "style": "solid",
+          "arrow": "end",
+          "label": ""
+        },
+        {
+          "id": "conn-024-0000-4000-8000-000000000000",
+          "from": "card-005-0000-4000-8000-000000000000",
+          "to": "card-006-0000-4000-8000-000000000000",
+          "style": "dashed",
+          "arrow": "both",
+          "label": ""
+        },
+        {
+          "id": "conn-025-0000-4000-8000-000000000000",
+          "from": "card-006-0000-4000-8000-000000000000",
+          "to": "card-016-0000-4000-8000-000000000000",
+          "style": "solid",
+          "arrow": "end",
+          "label": "then"
+        }
+      ]
+    },
+    {
+      "id": "board-019-0000-4000-8000-000000000000",
+      "name": "Retail ideas",
+      "parentId": "board-001-0000-4000-8000-000000000000",
+      "titleColor": "blue",
+      "showTitle": true,
+      "grid": false,
+      "viewport": {
+        "x": 0,
+        "y": 0,
+        "zoom": 1
+      },
+      "cards": [
+        {
+          "id": "card-020-0000-4000-8000-000000000000",
+          "type": "note",
+          "x": 40,
+          "y": 40,
+          "w": 300,
+          "h": 160,
+          "z": 1,
+          "rotation": 0,
+          "label": "Entrance",
+          "meta": "",
+          "color": "ink",
+          "locked": false,
+          "parentColumnId": null,
+          "data": {
+            "html": "<p>Make the threshold feel like an invitation.</p>"
+          }
+        },
+        {
+          "id": "card-021-0000-4000-8000-000000000000",
+          "type": "swatch",
+          "x": 380,
+          "y": 40,
+          "w": 200,
+          "h": 200,
+          "z": 2,
+          "rotation": 0,
+          "label": "Swatch",
+          "meta": "",
+          "color": "ink",
+          "locked": false,
+          "parentColumnId": null,
+          "data": {
+            "hex": "#00f",
+            "name": "Signal blue"
+          }
+        }
+      ],
+      "connectors": []
+    }
+  ],
+  "assets": {
+    "asset-002-0000-4000-8000-000000000000": {
+      "mime": "image/svg+xml",
+      "dataUrl": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiBmaWxsPSJub25lIiBzdHJva2U9IiMxZDJhNDQiIHN0cm9rZS13aWR0aD0iNi41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPgogIDxwYXRoIGQ9Ik01NiA5IEw2NSAxOSBMMjEgNjQgTDExIDU1Ii8+CiAgPHBhdGggZD0iTTg5IDczIEw2NSA0OCBRNTggNDEgNTIgNDggUTQ5IDUyIDQ5IDU4IEw0OSA3MCBRNTAgNzYgNTUgODEgTDY1IDkxIi8+Cjwvc3ZnPgo=",
+      "w": 100,
+      "h": 100
+    }
+  }
+}

@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg">
+  <!--
+    TASTBAAR moodboard icons. Drawn like the logo: viewBox 0 0 100 100, no fill,
+    stroke currentColor, width 6.5, round caps and joins, few strokes.
+    Use: <svg class="icon"><use href="assets/icons.svg#i-note"/></svg>
+    Dots are filled circles, never zero-length strokes: Safari does not draw those.
+  -->
+  <symbol id="i-note" viewBox="0 0 100 100"><path d="M22 14 L78 14 L78 86 L22 86 Z"/><path d="M36 38 L64 38 M36 54 L64 54 M36 70 L52 70"/></symbol>
+  <symbol id="i-image" viewBox="0 0 100 100"><path d="M14 22 L86 22 L86 78 L14 78 Z"/><path d="M14 70 L40 46 L60 64 L70 56 L86 70"/><circle cx="66" cy="38" r="7" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-link" viewBox="0 0 100 100"><path d="M44 30 L54 20 Q66 8 78 20 Q90 32 78 44 L66 56"/><path d="M56 70 L46 80 Q34 92 22 80 Q10 68 22 56 L34 44"/><path d="M40 60 L60 40"/></symbol>
+  <symbol id="i-todo" viewBox="0 0 100 100"><path d="M14 22 L32 22 L32 40 L14 40 Z"/><path d="M14 60 L32 60 L32 78 L14 78 Z"/><path d="M46 31 L86 31 M46 69 L86 69"/><path d="M18 69 L22 74 L28 64"/></symbol>
+  <symbol id="i-swatch" viewBox="0 0 100 100"><path d="M24 14 L76 14 L76 86 L24 86 Z"/><path d="M24 62 L76 62"/></symbol>
+  <symbol id="i-heading" viewBox="0 0 100 100"><path d="M24 16 L24 84 M76 16 L76 84 M24 50 L76 50"/></symbol>
+  <symbol id="i-column" viewBox="0 0 100 100"><path d="M30 10 L70 10 L70 90 L30 90 Z"/><path d="M40 28 L60 28 M40 46 L60 46 M40 64 L60 64"/></symbol>
+  <symbol id="i-board" viewBox="0 0 100 100"><path d="M12 20 L88 20 L88 80 L12 80 Z"/><path d="M26 34 L46 34 L46 52 L26 52 Z"/><path d="M58 46 L76 46 L76 66 L58 66 Z"/></symbol>
+  <symbol id="i-undo" viewBox="0 0 100 100"><path d="M34 22 L16 40 L34 58"/><path d="M16 40 L62 40 Q84 40 84 62 Q84 84 62 84 L44 84"/></symbol>
+  <symbol id="i-redo" viewBox="0 0 100 100"><path d="M66 22 L84 40 L66 58"/><path d="M84 40 L38 40 Q16 40 16 62 Q16 84 38 84 L56 84"/></symbol>
+  <symbol id="i-import" viewBox="0 0 100 100"><path d="M50 12 L50 62 M30 42 L50 62 L70 42"/><path d="M16 70 L16 86 L84 86 L84 70"/></symbol>
+  <symbol id="i-export" viewBox="0 0 100 100"><path d="M50 62 L50 12 M30 32 L50 12 L70 32"/><path d="M16 70 L16 86 L84 86 L84 70"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 100 100"><path d="M50 18 L50 82 M18 50 L82 50"/></symbol>
+  <symbol id="i-minus" viewBox="0 0 100 100"><path d="M18 50 L82 50"/></symbol>
+  <symbol id="i-fit" viewBox="0 0 100 100"><path d="M14 34 L14 14 L34 14 M66 14 L86 14 L86 34 M86 66 L86 86 L66 86 M34 86 L14 86 L14 66"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 100 100"><g fill="currentColor" stroke="none"><circle cx="22" cy="22" r="7"/><circle cx="50" cy="22" r="7"/><circle cx="78" cy="22" r="7"/><circle cx="22" cy="50" r="7"/><circle cx="50" cy="50" r="7"/><circle cx="78" cy="50" r="7"/><circle cx="22" cy="78" r="7"/><circle cx="50" cy="78" r="7"/><circle cx="78" cy="78" r="7"/></g></symbol>
+  <symbol id="i-title" viewBox="0 0 100 100"><path d="M16 20 L84 20 M50 20 L50 84"/></symbol>
+  <symbol id="i-breathe" viewBox="0 0 100 100"><path d="M10 50 Q30 20 50 50 Q70 80 90 50"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 100 100"><path d="M24 46 L76 46 L76 86 L24 86 Z"/><path d="M34 46 L34 32 Q34 14 50 14 Q66 14 66 32 L66 46"/></symbol>
+  <symbol id="i-unlock" viewBox="0 0 100 100"><path d="M24 46 L76 46 L76 86 L24 86 Z"/><path d="M34 46 L34 32 Q34 14 50 14 Q62 14 65 24"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 100 100"><path d="M16 26 L84 26 M40 26 L40 14 L60 14 L60 26"/><path d="M26 26 L30 86 L70 86 L74 26"/></symbol>
+  <symbol id="i-close" viewBox="0 0 100 100"><path d="M22 22 L78 78 M78 22 L22 78"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 100 100"><path d="M16 28 L84 28 M16 50 L84 50 M16 72 L84 72"/></symbol>
+</svg>

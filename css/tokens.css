@@ -1,0 +1,79 @@
+/*
+ * TASTBAAR moodboard — design tokens.
+ *
+ * From TASTBAAR-tool-style.md (section 2), plus the moodboard's own sizes
+ * taken from the studio site (SITE/experiencedesign/css/home.css). Every other
+ * stylesheet reads these variables; change a value here and the whole tool
+ * follows. Square corners, no gradients, no extra greys, no extra fonts.
+ *
+ * Courier Prime is vendored (assets/fonts) instead of imported from Google
+ * Fonts: the tool has to work offline.
+ *
+ * The accent is picked at random on every page load by the script in
+ * index.html's <head>; the values below are only the fallback.
+ */
+
+@font-face { font-family: "Courier Prime"; src: url("../assets/fonts/CourierPrime-Regular.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Courier Prime"; src: url("../assets/fonts/CourierPrime-Bold.woff2") format("woff2"); font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: "Courier Prime"; src: url("../assets/fonts/CourierPrime-Italic.woff2") format("woff2"); font-weight: 400; font-style: italic; font-display: swap; }
+@font-face { font-family: "Courier Prime"; src: url("../assets/fonts/CourierPrime-BoldItalic.woff2") format("woff2"); font-weight: 700; font-style: italic; font-display: swap; }
+
+:root {
+  /* colour */
+  --paper: #ffffff;          /* page and card background */
+  --ink: #000000;            /* text, labels, rules */
+  --muted: #777;             /* the only grey for text: inactive buttons, secondary text */
+  --line: #ccc;              /* the only grey for lines: separators, guides, connectors */
+  --brand-navy: #1d2a44;     /* logo stroke only */
+  --brand-grey: #ececec;     /* the big tool name behind the board */
+  --danger: #d00;            /* delete, in menus only */
+
+  /* the accent: one per page load (index.html), used sparingly */
+  --accent: #0ff;
+  --accent-ink: #000;        /* text on top of the accent */
+  --accent-paint: #f00;      /* complement, for inverting titles */
+  --accent-soft: color-mix(in srgb, var(--accent) 22%, white);
+
+  /* label colours on cards: every mix of 0 and f, never black or white */
+  --c-red: #f00;  --c-green: #0f0;  --c-blue: #00f;
+  --c-yellow: #ff0;  --c-cyan: #0ff;  --c-magenta: #f0f;
+
+  /* type */
+  --mono: "Courier Prime", "Courier New", Courier, monospace;      /* all UI and card text */
+  --display: "Helvetica Neue", Helvetica, Arial, sans-serif;       /* big titles and heading cards only */
+  --text: 14px;  --leading: 18px;                                  /* body: 14/18 mono */
+  --text-ui: 13px;  --leading-ui: 17px;                            /* labels */
+  --text-sm: 11px;                                                 /* counters, status line */
+  --text-lg: 18px;  --leading-lg: 24px;                            /* note emphasis, like .ritual__text */
+  --display-weight: 800;  --display-tracking: -0.075em;  --display-leading: 1;
+  --title-size: min(calc(100svh / 4.4), 34vw);   /* board title along the right edge; render.js sets it per name */
+
+  /* shape */
+  --radius: 0;               /* square corners everywhere, no exceptions */
+  --rule: 1px solid var(--ink);
+  --focus: 2px solid var(--ink);  --focus-offset: 2px;
+  /* labels are UPPERCASE: Courier Prime's line box keeps room for descenders
+     they don't have, so the text is moved down to its optical centre */
+  --label-pad: 3.25px 6px 0.75px;      /* = 2px 6px, centred */
+
+  /* spacing */
+  --card-pad: 40px;          /* like .win__body; 28px on phones */
+  --card-pad-sm: 20px;       /* small cards: swatch, link, heading */
+  --gap: 10px;               /* paragraph spacing */
+  --list-gap: 8px;
+  --edge: 30px;              /* distance of fixed UI from the screen edges */
+  --toolbar-h: 44px;
+  --card-w: 360px;           /* default note width (= --win-w) */
+
+  /* shadow */
+  --shadow: rgba(0,0,0,.2) 0 6px 12px;           /* frames, panels, menus */
+  --shadow-rest: var(--shadow);
+  --shadow-float: rgba(0,0,0,.16) 0 12px 22px;   /* top of the breathing loop */
+  --shadow-drag: rgba(0,0,0,.25) 0 14px 28px;
+  /* highlight: a thin accent border, never a coloured shadow */
+  --highlight: 1px solid var(--accent);           /* the selected or dragged card, focused inputs */
+}
+
+@media (max-width: 600px) {
+  :root { --card-pad: 28px; }
+}

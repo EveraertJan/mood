@@ -1,0 +1,378 @@
+/*
+ * TASTBAAR moodboard — paper, cards (Tastbaar windows), connectors, selection
+ * and the big board title.
+ *
+ *  <article class="card card--note card--red is-breathing">
+ *    <header class="card__bar"><span class="card__label">Label</span><span class="card__meta">Meta</span></header>
+ *    <div class="card__body">…</div>
+ *  </article>
+ *
+ * The card body is always white; the colour class only paints the label tab.
+ * Selected or dragged: a thin accent border (no coloured shadow).
+ */
+
+/* ---------- paper ---------- */
+.paper {
+  position: fixed;
+  inset: 0;
+  z-index: 1;               /* above the big tool name */
+  overflow: hidden;
+  background: transparent;  /* the page and the big name show through */
+}
+.paper.has-grid {
+  background-image: radial-gradient(rgba(0, 0, 0, .09) 1px, transparent 1.4px);
+  background-size: 24px 24px;
+}
+
+/* ---------- transformed layers ---------- */
+.board-layer {
+  position: absolute;
+  inset: 0;
+  transform-origin: 0 0;
+  pointer-events: none;   /* empty paper and connectors underneath get the clicks */
+  z-index: 2;             /* above the board list */
+}
+.board-layer .card { pointer-events: auto; }
+.marquee-layer, .guide-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: visible;
+}
+.connectors-layer {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  overflow: visible;
+  pointer-events: none;
+  transform-origin: 0 0;
+  color: var(--ink);
+}
+.connectors-layer .connector__dot { fill: var(--ink); }
+.connector__hit { fill: none; stroke: transparent; stroke-width: 14; pointer-events: stroke; cursor: pointer; }
+.connector__tab { fill: var(--paper); }
+.connector__text { font: var(--text-ui) var(--mono); fill: var(--ink); }
+
+/* ---------- board title ----------
+   The board's name stands up along the right edge, reading bottom to top, a
+   little longer than the screen. It inverts: the accent on white, the opposite
+   over black. render.js sets --title-size from the length of the name. */
+.board-title {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: -0.12em;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-family: var(--display);
+  font-weight: var(--display-weight);
+  font-size: var(--title-size);
+  letter-spacing: var(--display-tracking);
+  line-height: var(--display-leading);
+  white-space: nowrap;
+  color: var(--accent-paint);        /* complement of the accent */
+  mix-blend-mode: difference;        /* shows as the chosen colour on white */
+  pointer-events: none;
+  user-select: none;
+  z-index: 3500;                     /* above the cards, under the toolbar */
+}
+.board-title[hidden] { display: none; }
+
+/* ---------- card = Tastbaar window ---------- */
+.card {
+  --tab: var(--ink);
+  --tab-text: #fff;
+  position: absolute;
+  width: var(--card-w);
+  background: var(--paper);
+  box-shadow: var(--shadow-rest);
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+}
+
+.card--red     { --tab: var(--c-red); }
+.card--green   { --tab: var(--c-green);   --tab-text: var(--ink); }
+.card--blue    { --tab: var(--c-blue); }
+.card--yellow  { --tab: var(--c-yellow);  --tab-text: var(--ink); }
+.card--cyan    { --tab: var(--c-cyan);    --tab-text: var(--ink); }
+.card--magenta { --tab: var(--c-magenta); }
+
+.card__bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+.card__label {
+  background: var(--tab);
+  color: var(--tab-text);
+  font: var(--text-ui)/var(--leading-ui) var(--mono);
+  text-transform: uppercase;
+  padding: var(--label-pad);
+  width: fit-content;
+}
+/* counters and meta: a small black label flush top-right */
+.card__meta {
+  align-self: flex-start;
+  background: var(--ink);
+  color: #fff;
+  font: var(--text-sm)/15px var(--mono);
+  text-transform: uppercase;
+  padding: 2px 5px 0;
+  margin-left: auto;
+}
+.card__label:empty, .card__meta:empty { display: none; }
+
+.card__body { padding: var(--card-pad); }
+.card__body p { margin: var(--gap) 0 0; }
+.card__body p:first-child { margin-top: 0; }
+.card__body ul, .card__body ol { margin: 0; padding-left: 18px; }
+.card__body li + li { margin-top: var(--list-gap); }
+.card__body .rule { margin-top: 14px; padding-top: 14px; border-top: var(--rule); }
+.card__body .lg { font-size: var(--text-lg); line-height: var(--leading-lg); }
+
+/* editable bodies: no browser outline, the card carries the focus ring */
+.card__body--edit:focus,
+.card__body--edit:focus-visible,
+.heading__text:focus,
+.heading__text:focus-visible {
+  outline: none;
+}
+.card:focus-visible { outline: var(--focus); outline-offset: var(--focus-offset); }
+
+.more {
+  display: block;
+  margin-top: 14px;
+  text-align: right;
+  text-transform: uppercase;
+}
+
+/* states */
+.card.is-dragging { cursor: grabbing; box-shadow: var(--shadow-drag); animation-play-state: paused; }
+.card.is-selected { outline: var(--highlight); outline-offset: 0; animation: none; }
+.card.is-dragging { outline: var(--highlight); outline-offset: 0; }
+.card--heading.is-selected, .card--heading.is-dragging { outline-offset: 2px; }
+.card.is-locked { cursor: default; }
+.card.is-locked .card__handle { display: none; }
+/* a column is a group, not a window: no paper, no shadow, just a faint dotted outline */
+.card.card--column, .card.card--column.is-selected.is-dragging { background: none; box-shadow: none; outline: none; }
+.card--column::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1px dotted var(--line);
+  pointer-events: none;
+}
+.card--column.is-selected::after, .card--column.is-dragging::after { border: 1px dashed var(--accent); }
+.card--column.is-drop-target::after { border: 1px dashed var(--ink); }
+
+/* text being edited can be selected (Safari needs this explicitly) */
+.card [contenteditable="true"], .card [contenteditable="plaintext-only"], .card input[type="text"] {
+  -webkit-user-select: text; user-select: text; cursor: text; outline: none;
+}
+.card [data-placeholder]:empty::before { content: attr(data-placeholder); color: var(--muted); }
+.card__body--edit.is-empty { position: relative; }
+.card__body--edit.is-empty::before {
+  content: attr(data-placeholder);
+  position: absolute;
+  left: var(--card-pad);
+  top: var(--card-pad);
+  color: var(--muted);
+  pointer-events: none;
+}
+/* a label or counter being renamed stays visible, even when empty */
+.card__label.is-editing, .card__meta.is-editing { display: block; min-width: 4ch; cursor: text; }
+.card__label.is-editing, .card__meta.is-editing { outline: var(--highlight); outline-offset: 1px; }
+
+.card.is-breathing { animation: float var(--breathe, 8s) ease-in-out infinite; animation-delay: var(--breathe-delay, 0s); }
+.card.is-called { animation: called .6s cubic-bezier(.2, .7, .2, 1); }
+/* selection and dragging win over breathing; headings are type, they don't float */
+.card.is-breathing.is-selected, .card.is-breathing.is-dragging, .card--heading.is-breathing, .card--column.is-breathing { animation: none; }
+
+
+@keyframes float {
+  0%, 100% { transform: translateY(0);    box-shadow: var(--shadow-rest); }
+  50%      { transform: translateY(-4px); box-shadow: var(--shadow-float); }
+}
+@keyframes called {
+  0%   { transform: scale(1); }
+  35%  { transform: scale(1.035) rotate(-.6deg); }
+  70%  { transform: scale(.995) rotate(.3deg); }
+  100% { transform: scale(1); }
+}
+
+/* ---------- card types ---------- */
+
+/* image: full bleed, the tab overlaps the image's top edge */
+.card--image .card__bar { position: relative; z-index: 1; margin-bottom: -22px; }
+.card--image { display: flex; flex-direction: column; }
+.card--image .card__img { display: block; flex: 1; min-height: 0; width: 100%; object-fit: cover; background: var(--line); }
+.card--image .card__img.is-contain { object-fit: contain; background: var(--paper); }
+.card--image .card__body { padding: var(--card-pad-sm); }
+.card--image:not(.is-selected) .card__body:empty:not(:focus) { display: none; }
+.card--image .card__img:not([src]), .card--image .card__img[src=""] { visibility: hidden; }
+
+/* link */
+.card--link .card__body { padding: var(--card-pad-sm); }
+.card--link .link__title { font-weight: 700; }
+
+/* to-do */
+.todo { list-style: none; padding-left: 0 !important; }
+.todo li { display: flex; gap: 8px; align-items: flex-start; }
+.todo input[type="checkbox"] {
+  appearance: none;
+  flex: none;
+  width: 14px;
+  height: 14px;
+  margin: 2px 0 0;
+  border: var(--rule);
+  background: var(--paper);
+  cursor: pointer;
+}
+.todo input[type="checkbox"]:checked { background: var(--ink); }
+.todo input[type="checkbox"]:checked + input[type="text"] { text-decoration: line-through; color: var(--muted); }
+.todo input[type="text"] {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: none;
+  padding: 0;
+  font: inherit;
+}
+.todo input[type="text"]:focus { outline: none; }
+.todo__controls { display: none; gap: 4px; }
+.todo li:hover .todo__controls { display: flex; }
+.todo__btn {
+  border: 0;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  color: var(--muted);
+  line-height: 0;
+}
+.todo__btn:hover { color: var(--ink); }
+.todo__btn svg { width: 12px; height: 14px; fill: none; stroke: currentColor; stroke-width: 8; stroke-linecap: round; stroke-linejoin: round; }
+.todo__add { margin-top: var(--gap); }
+
+/* swatch */
+.card--swatch { width: 200px; }
+.swatch__chip { height: 140px; background: var(--chip, var(--ink)); }
+.card--swatch .card__body { padding: var(--card-pad-sm); }
+.swatch__hex { text-transform: uppercase; font-weight: 700; cursor: copy; }
+
+/* heading: type on paper, no window */
+.card--heading {
+  width: auto;
+  background: none;
+  box-shadow: none;
+  padding: var(--card-pad-sm);
+  font-family: var(--display);
+  font-weight: var(--display-weight);
+  letter-spacing: var(--display-tracking);
+  line-height: var(--display-leading);
+  font-size: 64px;
+  white-space: nowrap;
+  cursor: text;
+}
+.heading__text { display: inline-block; }
+
+/* column */
+.card--column { min-height: 320px; }
+.card--column .card__body { padding: var(--card-pad-sm); }
+.card--column.is-collapsed { height: auto !important; min-height: 0; }
+.card--column.is-collapsed .card__body { display: none; }
+.column__list { display: flex; flex-direction: column; gap: 10px; }
+.column__list:empty::before { content: "Drop cards here"; color: var(--muted); text-transform: uppercase; font-size: var(--text-ui); }
+.column__list > .card { position: relative; left: auto; top: auto; width: 100%; height: auto; min-height: 60px; }
+
+/* board card */
+.board__mini {
+  position: relative;
+  aspect-ratio: 3 / 2;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  overflow: hidden;
+}
+.board__mini span { position: absolute; background: var(--paper); box-shadow: rgba(0,0,0,.2) 0 1px 3px; }
+
+/* ---------- selection, marquee, guides, handles ---------- */
+.marquee { position: absolute; border: 1px dashed var(--ink); background: none; pointer-events: none; }
+.guide { position: absolute; background: var(--line); pointer-events: none; }
+.guide--v { width: 1px; }
+.guide--h { height: 1px; }
+
+.card__resize { position: absolute; inset: 0; pointer-events: none; display: none; }
+.card.is-resizable > .card__resize { display: block; }
+.column__list .card__resize, .column__list .card__handle { display: none; }
+.card__corner {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: var(--ink);
+  pointer-events: auto;
+}
+.card__corner--nw { left: -4px; top: -4px; cursor: nwse-resize; }
+.card__corner--ne { right: -4px; top: -4px; cursor: nesw-resize; }
+.card__corner--sw { left: -4px; bottom: -4px; cursor: nesw-resize; }
+.card__corner--se { right: -4px; bottom: -4px; cursor: nwse-resize; }
+
+.card__handle {
+  position: absolute;
+  right: -5px;
+  top: 50%;
+  width: 10px;
+  height: 10px;
+  padding: 0;
+  border: 0;
+  background: var(--ink);
+  transform: translateY(-50%);
+  cursor: crosshair;
+  opacity: 0;
+  transition: opacity .15s ease;
+}
+.card:hover .card__handle,
+.card.is-selected .card__handle { opacity: 1; }
+.card__handle:hover { background: var(--accent); }
+
+/* ---------- connectors (inline SVG) ---------- */
+/* thin and neutral grey; dashes for special cases, not colour */
+.connector { fill: none; stroke: var(--muted); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.connector.is-dashed { stroke-dasharray: 6 6; }
+.connector.is-selected { stroke: var(--ink); stroke-width: 2; }
+.connector__label {
+  background: var(--paper);
+  padding: 2px 6px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card.is-breathing, .card.is-called { animation: none; }
+}
+
+/* ---------- colour strip under a label being renamed ---------- */
+.colorstrip {
+  position: fixed;
+  z-index: 4600;
+  display: flex;
+  gap: 4px;
+  padding: 6px;
+}
+.colorstrip__swatch { width: 18px; height: 18px; border: 0; padding: 0; cursor: pointer; }
+.colorstrip__swatch--ink { background: var(--ink); }
+.colorstrip__swatch--red { background: var(--c-red); }
+.colorstrip__swatch--green { background: var(--c-green); }
+.colorstrip__swatch--blue { background: var(--c-blue); }
+.colorstrip__swatch--yellow { background: var(--c-yellow); }
+.colorstrip__swatch--cyan { background: var(--c-cyan); }
+.colorstrip__swatch--magenta { background: var(--c-magenta); }
+.colorstrip__swatch.is-current { outline: 2px solid var(--ink); outline-offset: 1px; }
+.colorstrip__swatch:hover { outline: var(--highlight); outline-offset: 1px; }
